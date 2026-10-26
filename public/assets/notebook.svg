@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 410" fill="none">
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" stroke="#63816f" stroke-opacity=".13" stroke-width=".8"/></pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#354b3e" flood-opacity=".09"/></filter>
+  </defs>
+  <circle cx="264" cy="200" r="164" fill="#e7ece1"/>
+  <circle cx="264" cy="200" r="187" stroke="#d2dccc" stroke-dasharray="2 9"/>
+  <path d="M92 309c-29-26-43-56-36-87M411 95c23 15 38 37 42 65" stroke="#bdcbb9" stroke-linecap="round"/>
+  <g transform="rotate(-7 250 205)" filter="url(#shadow)">
+    <rect x="91" y="48" width="326" height="306" rx="4" fill="#fcfcf4" stroke="#cbd5c5"/>
+    <rect x="111" y="69" width="286" height="264" fill="url(#grid)"/>
+    <path d="M112 109h284" stroke="#cbd5c5"/>
+    <text x="127" y="94" fill="#516b57" font-size="12" font-family="Georgia, serif" letter-spacing="2">A LITTLE CLOSER.</text>
+    <text x="130" y="150" fill="#355d49" font-size="24" font-family="Georgia, serif" font-style="italic">aₙ = 1 − 1/n</text>
+    <g stroke="#7c8d78" stroke-width="1.2"><path d="M138 288h236m-5-4 5 4-5 4M138 288V173m-4 5 4-5 4 5"/></g>
+    <path d="M138 191h228" stroke="#88a185" stroke-dasharray="4 5"/>
+    <text x="121" y="195" fill="#7c8d78" font-size="13" font-family="Georgia, serif">1</text>
+    <text x="375" y="305" fill="#7c8d78" font-size="13" font-family="Georgia, serif" font-style="italic">n</text>
+    <path d="M154 288 184 239.5 214 223.3 244 215.25 274 210.4 304 207.17 334 204.86 364 203.13" stroke="#9bb396" stroke-width="1.5"/>
+    <g fill="#527452"><circle cx="154" cy="288" r="3.8"/><circle cx="184" cy="239.5" r="3.8"/><circle cx="214" cy="223.3" r="3.8"/><circle cx="244" cy="215.25" r="3.8"/><circle cx="274" cy="210.4" r="3.8"/><circle cx="304" cy="207.17" r="3.8"/><circle cx="334" cy="204.86" r="3.8"/><circle cx="364" cy="203.13" r="3.8"/></g>
+    <text x="258" y="322" fill="#567a5b" font-size="17" font-family="Georgia, serif" font-style="italic">n → ∞, aₙ → 1</text>
+  </g>
+  <g transform="rotate(12 380 338)"><rect x="335" y="317" width="111" height="40" rx="2" fill="#dce5d1"/><text x="349" y="342" fill="#4d6a4b" font-family="Georgia, serif" font-size="12" letter-spacing="1">work in progress</text></g>
+  <path d="m77 116 5 12 13 1-10 8 3 13-11-7-11 7 3-13-10-8 13-1z" fill="#b2bf9d"/>
+  <path d="m421 230 2 8 8 2-8 2-2 8-2-8-8-2 8-2z" fill="#7b9574"/>
+</svg>
