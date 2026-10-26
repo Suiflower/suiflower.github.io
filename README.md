@@ -45,6 +45,18 @@ $$
 
 目前三篇文章都是明确标注的排版示例。正式写作时可以删除示例 `.md` 文件，并将 `site.json` 中的 `showDemoNotice` 改为 `false`，移除首页示例提示和禁止搜索引擎索引的标记。单篇真实文章的 `demo` 设为 `false`。
 
+## 背景图片
+
+浅色模式使用 `public/assets/backgrounds/light.jpg`，深色模式使用 `public/assets/backgrounds/dark.jpg`。替换同名图片并重新生成即可换背景。
+
+背景显示和半透明阅读区域由 `public/assets/backgrounds.css` 控制，加载在基础样式之后：
+
+- `--wallpaper-position` 调整裁切位置；手机有单独的取景设置。
+- `--glass` 控制首页和导航区域的底色及透明度。
+- `--reading-surface` 控制文章页的阅读底色，透明度更低以保证公式和长文清晰。
+
+页面右上角的深浅模式按钮会同时切换背景。首页右侧留给背景画面；文章页保持完整的阅读区域。
+
 ## 发布设置
 
 仓库的 **Settings → Pages → Build and deployment → Source** 应选择 **GitHub Actions**。发布流程位于 `.github/workflows/pages.yml`，生成的 `dist/` 会作为网页发布，不需要手动上传生成文件，也不需要购买服务器。

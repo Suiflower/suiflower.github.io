@@ -1,0 +1,139 @@
+/* Change these two files to replace the light and dark wallpapers. */
+:root {
+  --paper: #e9f0fc;
+  --ink: #243650;
+  --muted: #526680;
+  --green: #3b6497;
+  --line: rgba(100, 127, 163, .25);
+  --soft: rgba(220, 231, 249, .86);
+  --wash: rgba(231, 239, 251, .84);
+  --hint: #607695;
+  --wallpaper: url('./backgrounds/light.jpg');
+  --wallpaper-position: 52% center;
+  --wallpaper-tint: linear-gradient(180deg, rgba(225, 236, 255, .08), rgba(224, 235, 254, .05) 45%, rgba(33, 53, 89, .16));
+  --glass: rgba(248, 251, 255, .84);
+  --reading-surface: rgba(249, 252, 255, .95);
+  --glass-border: rgba(250, 253, 255, .65);
+  --panel-shadow: 0 12px 42px rgba(25, 46, 80, .12);
+}
+:root[data-theme='dark'] {
+  --paper: #171a28;
+  --ink: #e6e8f6;
+  --muted: #bdc3da;
+  --green: #c5b9ee;
+  --line: rgba(175, 182, 218, .25);
+  --soft: rgba(62, 60, 88, .86);
+  --wash: rgba(43, 45, 68, .86);
+  --hint: #b2bdd9;
+  --wallpaper: url('./backgrounds/dark.jpg');
+  --wallpaper-position: 62% center;
+  --wallpaper-tint: linear-gradient(180deg, rgba(13, 16, 30, .18), rgba(13, 16, 30, .28));
+  --glass: rgba(23, 28, 46, .85);
+  --reading-surface: rgba(23, 28, 46, .96);
+  --glass-border: rgba(181, 188, 223, .24);
+  --panel-shadow: 0 14px 48px rgba(4, 7, 20, .27);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #171a28;
+    --ink: #e6e8f6;
+    --muted: #bdc3da;
+    --green: #c5b9ee;
+    --line: rgba(175, 182, 218, .25);
+    --soft: rgba(62, 60, 88, .86);
+    --wash: rgba(43, 45, 68, .86);
+    --hint: #b2bdd9;
+    --wallpaper: url('./backgrounds/dark.jpg');
+    --wallpaper-position: 62% center;
+    --wallpaper-tint: linear-gradient(180deg, rgba(13, 16, 30, .18), rgba(13, 16, 30, .28));
+    --glass: rgba(23, 28, 46, .85);
+    --reading-surface: rgba(23, 28, 46, .96);
+    --glass-border: rgba(181, 188, 223, .24);
+    --panel-shadow: 0 14px 48px rgba(4, 7, 20, .27);
+  }
+}
+body { position: relative; isolation: isolate; min-height: 100vh; }
+/* A fixed layer keeps the wallpaper still without mobile background-attachment quirks. */
+body::before, body::after { content: ''; position: fixed; inset: 0; pointer-events: none; }
+body::before { z-index: -2; background: var(--wallpaper) var(--wallpaper-position) / cover no-repeat; }
+body::after { z-index: -1; background: var(--wallpaper-tint); }
+.site-header, .intro-copy, .writing, .intro-bottom, .site-footer,
+.reading-top, .reading-layout, .page-layout, .about-layout {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--panel-shadow);
+}
+.site-header { padding: 18px 26px; margin-top: 24px; min-height: 88px; border-radius: 18px; }
+.intro { min-height: 475px; padding: 48px 0 34px; align-items: center; }
+.intro-copy { max-width: 520px; padding: 32px 34px; border-radius: 22px; }
+/* Leave the right half of the hero open for the wallpaper's character. */
+.intro-art { display: none; }
+.intro h1 { font-size: clamp(32px, 3.5vw, 44px); letter-spacing: 1px; }
+.intro-description { font-size: 14px; }
+.intro-bottom { padding: 14px 25px; border-radius: 14px; }
+.writing { margin-top: 24px; padding: 30px 30px 22px; border-radius: 22px; }
+.notebook-aside { background: var(--wash); border-radius: 12px; border: 1px solid var(--line); }
+.post-info>p { font-size: 12px; }
+.demo-notice { font-size: 11px; }
+.search input { font-size: 12px; }
+.site-footer { margin-top: 28px; margin-bottom: 24px; padding: 19px 25px; border-radius: 14px; }
+.page-layout { max-width: 900px; margin: 32px auto 0; padding: 42px; border-radius: 22px; background: var(--reading-surface); }
+.about-layout { max-width: 980px; margin: 32px auto 0; padding: 42px; border-radius: 22px; background: var(--reading-surface); }
+.reading-top { margin-top: 28px; margin-bottom: 16px; padding: 12px 18px; border-radius: 12px; }
+.reading-layout { padding: 36px; border-radius: 22px; background: var(--reading-surface); }
+.article-header { padding-top: 0; }
+.back-top { background: var(--reading-surface); box-shadow: var(--panel-shadow); }
+@media (max-width: 1000px) {
+  .intro-copy { padding: 26px; }
+  .intro h1 { font-size: 34px; }
+  .intro-description { font-size: 13px; }
+  .writing { padding: 26px; }
+  .writing-layout { gap: 25px; grid-template-columns: minmax(0, 1fr) 180px; }
+  .notebook-aside { padding-inline: 17px; }
+  .page-layout, .about-layout, .reading-layout { padding: 30px; }
+}
+@media (max-width: 760px) {
+  .site-header { margin-top: 18px; padding: 15px 20px; }
+  .intro { min-height: 435px; padding-top: 32px; gap: 0; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); }
+  .intro-copy { padding: 25px; }
+  .intro h1 { font-size: 30px; }
+  .intro-description { font-size: 12px; }
+  .intro-bottom { padding-inline: 20px; }
+  .writing { padding: 24px; }
+  .writing-layout { grid-template-columns: minmax(0, 1fr); }
+  .reading-layout, .page-layout, .about-layout { padding: 27px; }
+  .article-header { padding-top: 0; }
+  .site-footer { padding-inline: 20px; }
+}
+@media (max-width: 520px) {
+  :root { --wallpaper-position: 52% center; }
+  :root[data-theme='dark'] { --wallpaper-position: 70% center; }
+  .shell { padding-inline: 16px; }
+  .site-header { padding: 16px 19px 12px; margin-top: 16px; min-height: 112px; border-radius: 16px; }
+  .header-right { margin-top: 6px; }
+  .intro { display: block; min-height: 0; padding: 300px 0 22px; }
+  .intro-copy { padding: 26px 24px; border-radius: 18px; }
+  .intro h1 { font-size: 32px; letter-spacing: 1px; }
+  .intro-description { max-width: none; line-height: 2; }
+  .intro-bottom { padding: 13px 19px; font-size: 10px; }
+  .writing { margin-top: 20px; padding: 23px 20px 17px; border-radius: 18px; }
+  .section-heading h2 { font-size: 18px; }
+  .section-heading h2>span { font-size: 12px; margin-left: 8px; }
+  .section-heading>a { gap: 7px; }
+  .filters button { padding-inline: 8px; }
+  .post-info h3 { font-size: 20px; }
+  .reading-top { margin-top: 22px; padding: 11px 14px; }
+  .reading-layout, .page-layout, .about-layout { padding: 24px 20px; border-radius: 18px; }
+  .article-header { padding-top: 0; }
+  .article-header h1 { font-size: 28px; }
+  .site-footer { padding: 17px 19px; border-radius: 13px; }
+}
+@media (max-width: 520px) and (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) { --wallpaper-position: 70% center; }
+}
+@media print {
+  :root, :root[data-theme='dark'] { --paper: white; --ink: black; --muted: #555; --green: #333; --line: #ccc; --soft: #eee; --wash: #f5f5f5; --glass: white; --reading-surface: white; }
+  body::before, body::after { display: none; }
+  .intro-copy, .writing, .intro-bottom, .reading-layout, .page-layout, .about-layout { border: 0; border-radius: 0; background: white; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .reading-layout, .page-layout, .about-layout { padding: 0; margin: 0; }
+}
