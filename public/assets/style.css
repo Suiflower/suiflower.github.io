@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Source Han Sans SC";
+  src: url("./fonts/SourceHanSansCN-VF.otf.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 250 900;
+  font-display: swap;
+}
 :root {
   color-scheme: light;
   --paper: #f7f7ef;
@@ -157,6 +164,9 @@ main:focus { outline:none; }
 .article-meta { display:flex; flex-wrap:wrap; gap:13px; color:var(--muted); font-size:10px; }
 .article-columns { display:grid; grid-template-columns:minmax(0,740px) 170px; gap:48px; padding-top:24px; align-items:start; }
 .prose { font-size:15px; line-height:2; overflow-wrap:anywhere; min-width:0; }
+.prose p, .prose li, .prose dt, .prose dd, .prose th, .prose td {
+  font-family: "Source Han Sans SC", "Source Han Sans CN", var(--sans);
+}
 .prose>p:first-child { color:var(--muted); font-size:13px; }
 .prose h2,.prose h3 { line-height:1.6; scroll-margin-top:30px; }
 .prose h2 { font:600 24px/1.6 var(--serif); margin:37px 0 19px; }
