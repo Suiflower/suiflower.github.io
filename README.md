@@ -1,4 +1,4 @@
-# Kisakiの手记
+# Sora's Garden
 
 [打开博客](https://suiflower.github.io/) · [查看发布进度](https://github.com/Suiflower/suiflower.github.io/actions)
 
