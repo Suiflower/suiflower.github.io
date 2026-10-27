@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import MarkdownIt from 'markdown-it';
 import katex from 'katex';
+import { prepareFonts } from './prepare-fonts.mjs';
 
 const project = fileURLToPath(new URL('../', import.meta.url));
 const dist = path.join(project, 'dist');
@@ -85,6 +86,7 @@ fs.mkdirSync(dist, { recursive: true });
 if (path.dirname(dist) !== project.replace(/[\\/]$/, '')) throw new Error('Unexpected output directory.');
 for (const name of fs.readdirSync(dist)) fs.rmSync(path.join(dist, name), { recursive: true, force: true });
 fs.cpSync(path.join(project, 'public'), dist, { recursive: true });
+await prepareFonts(dist);
 fs.mkdirSync(path.join(dist, 'assets/katex'), { recursive: true });
 fs.copyFileSync(path.join(project, 'node_modules/katex/dist/katex.min.css'), path.join(dist, 'assets/katex/katex.min.css'));
 fs.cpSync(path.join(project, 'node_modules/katex/dist/fonts'), path.join(dist, 'assets/katex/fonts'), { recursive: true });
@@ -99,7 +101,7 @@ function shell({ title, description = config.description, route = '', active = '
   const nav = [['', 'Writings', 'writing'], ['archive/', 'Index', 'archive'], ['about/', 'About', 'about']].map(([href, label, key]) => `<a href="${root}${href}"${active === key ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   return `<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#f7f7ef">
-<title>${escape(title ? `${title} · ${config.title}` : config.title)}</title><meta name="description" content="${escape(description)}">${config.showDemoNotice ? '<meta name="robots" content="noindex,nofollow">' : ''}<link rel="canonical" href="${escape(url)}"><meta property="og:title" content="${escape(title || config.title)}"><meta property="og:description" content="${escape(description)}"><meta property="og:type" content="${article ? 'article' : 'website'}"><meta property="og:url" content="${escape(url)}"><link rel="icon" href="${root}assets/avatar.svg" type="image/svg+xml"><link rel="alternate" type="application/atom+xml" href="${root}feed.xml" title="${escape(config.title)}"><link rel="stylesheet" href="${root}assets/style.css"><link rel="stylesheet" href="${root}assets/backgrounds.css">${article ? `<link rel="stylesheet" href="${root}assets/katex/katex.min.css">` : ''}<script src="${root}assets/theme.js"></script><script src="${root}assets/site.js" defer></script></head>
+<title>${escape(title ? `${title} · ${config.title}` : config.title)}</title><meta name="description" content="${escape(description)}">${config.showDemoNotice ? '<meta name="robots" content="noindex,nofollow">' : ''}<link rel="canonical" href="${escape(url)}"><meta property="og:title" content="${escape(title || config.title)}"><meta property="og:description" content="${escape(description)}"><meta property="og:type" content="${article ? 'article' : 'website'}"><meta property="og:url" content="${escape(url)}"><link rel="icon" href="${root}assets/avatar.svg" type="image/svg+xml"><link rel="alternate" type="application/atom+xml" href="${root}feed.xml" title="${escape(config.title)}"><link rel="preload" href="${root}assets/fonts/SourceHanSerifCN-VF.otf.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="${root}assets/style.css"><link rel="stylesheet" href="${root}assets/backgrounds.css">${article ? `<link rel="stylesheet" href="${root}assets/katex/katex.min.css">` : ''}<script src="${root}assets/theme.js"></script><script src="${root}assets/site.js" defer></script></head>
 <body><a class="skip-link" href="#main">跳到正文</a><div class="shell"><header class="site-header"><a class="brand" href="${root}" aria-label="${escape(config.title)}，首页"><img src="${root}assets/avatar.svg" width="38" height="38" alt=""><span>${escape(config.title)}</span></a><div class="header-right"><nav aria-label="主导航">${nav}</nav><button class="theme-toggle" type="button" aria-label="Turn on light mode" title="Turn on dark mode" hidden><svg class="moon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M20.5 13.2A8.5 8.5 0 0 1 10.8 3.5a8.5 8.5 0 1 0 9.7 9.7Z"/></svg><svg class="sun" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button></div></header><main id="main" tabindex="-1">${body}</main><footer class="site-footer"><span>© ${new Date().getUTCFullYear()} ${escape(config.author)}<span class="footer-thought"> · 一页一页，慢慢写。</span></span><a href="${root}feed.xml">RSS 订阅 ${arrow}</a></footer></div><button class="back-top" type="button" aria-label="回到顶部" hidden>↑</button></body></html>`;
 }
 

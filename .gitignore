@@ -7,3 +7,6 @@ dist/
 .env
 .env.*
 *.log
+
+# Optional local copy; builds download and verify the pinned official font.
+public/assets/fonts/SourceHanSerifCN-VF.otf.woff2

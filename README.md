@@ -88,3 +88,13 @@ npm run dev
 | `dist/` | 本地生成的静态网站，不提交到仓库 |
 
 图形为本项目原创 SVG；没有使用参考博客的文章、头像或插画。KaTeX 与 Markdown-it 按各自开源许可证使用；生成网站中包含 KaTeX 的许可证。
+
+## 字体
+
+正文、标题、导航、日期及英文标签统一使用思源宋体。字体随网站自行托管，访客无需安装。
+
+- 字体：Adobe Source Han Serif CN 可变 WOFF2（200–900 字重）。
+- 官方来源：https://github.com/adobe-fonts/source-han-serif/blob/7889f11bf31170b5d092a083b357c8c8130f89e0/Variable/WOFF2/OTF/Subset/SourceHanSerifCN-VF.otf.woff2
+- 构建时由 `scripts/prepare-fonts.mjs` 下载固定版本并校验 SHA-256，输出到 `dist/assets/fonts/SourceHanSerifCN-VF.otf.woff2`。可在 `public/assets/fonts/` 放置同名官方字体供离线构建。
+- 许可证：`public/assets/fonts/OFL-SourceHanSerif.txt`（SIL Open Font License 1.1）。
+- 数学公式使用 KaTeX 自带字体；代码、键盘按键和程序输出使用等宽字体。
