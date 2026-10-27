@@ -2,7 +2,7 @@
   const theme = document.querySelector('.theme-toggle');
   const dark = () => document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
   const updateThemeLabel = () => {
-    const label = dark() ? '切换到浅色模式' : '切换到深色模式';
+    const label = dark() ? 'Turn on light mode' : 'Turn on dark mode';
     theme.setAttribute('aria-label', label); theme.title = label;
   };
   if (theme) {
@@ -32,7 +32,7 @@
         post.hidden = !matches; visible += Number(matches);
       }
       empty.hidden = visible !== 0;
-      results.textContent = `共 ${visible} 篇手记`;
+      results.textContent = `Total ${visible} posts`;
       for (const button of filters) button.setAttribute('aria-pressed', String(button.dataset.filter === category));
     }
     for (const button of filters) button.addEventListener('click', () => { category = button.dataset.filter; filter(); });
