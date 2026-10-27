@@ -10,7 +10,7 @@
     theme.addEventListener('click', () => {
       const value = dark() ? 'light' : 'dark';
       document.documentElement.dataset.theme = value;
-      try { localStorage.setItem('kisaki-theme', value); } catch { /* Theme still works without storage. */ }
+      try { localStorage.setItem('sora-theme', value); } catch { /* Theme still works without storage. */ }
       updateThemeLabel();
     });
     matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeLabel);
