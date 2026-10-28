@@ -72,7 +72,6 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
 .intro-description { font-size: 14px; }
 .intro-bottom { padding: 14px 25px; border-radius: 14px; }
 .writing { margin-top: 24px; padding: 30px 30px 22px; border-radius: 22px; }
-.notebook-aside { background: var(--wash); border-radius: 12px; border: 1px solid var(--line); }
 .post-info>p { font-size: 12px; }
 .demo-notice { font-size: 11px; }
 .search input { font-size: 12px; }
@@ -88,8 +87,6 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
   .intro h1 { font-size: 34px; }
   .intro-description { font-size: 13px; }
   .writing { padding: 26px; }
-  .writing-layout { gap: 25px; grid-template-columns: minmax(0, 1fr) 180px; }
-  .notebook-aside { padding-inline: 17px; }
   .page-layout, .about-layout, .reading-layout { padding: 30px; }
 }
 @media (max-width: 760px) {
@@ -100,7 +97,6 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
   .intro-description { font-size: 12px; }
   .intro-bottom { padding-inline: 20px; }
   .writing { padding: 24px; }
-  .writing-layout { grid-template-columns: minmax(0, 1fr); }
   .reading-layout, .page-layout, .about-layout { padding: 27px; }
   .article-header { padding-top: 0; }
   .site-footer { padding-inline: 20px; }
@@ -120,7 +116,6 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
   .section-heading h2 { font-size: 18px; }
   .section-heading h2>span { font-size: 12px; margin-left: 8px; }
   .section-heading>a { gap: 7px; }
-  .filters button { padding-inline: 8px; }
   .post-info h3 { font-size: 20px; }
   .reading-top { margin-top: 22px; padding: 11px 14px; }
   .reading-layout, .page-layout, .about-layout { padding: 24px 20px; border-radius: 18px; }

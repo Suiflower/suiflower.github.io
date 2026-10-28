@@ -19,25 +19,21 @@
   if (tools) {
     tools.hidden = false;
     const input = tools.querySelector('[data-search]');
-    const filters = [...tools.querySelectorAll('[data-filter]')];
     const posts = [...document.querySelectorAll('[data-post]')];
     const empty = document.querySelector('.empty-state');
     const results = document.querySelector('[data-results]');
-    let category = 'all';
     function filter() {
       const query = input.value.trim().toLocaleLowerCase();
       let visible = 0;
       for (const post of posts) {
-        const matches = (category === 'all' || post.dataset.category === category) && post.dataset.search.includes(query);
+        const matches = post.dataset.search.includes(query);
         post.hidden = !matches; visible += Number(matches);
       }
       empty.hidden = visible !== 0;
       results.textContent = `Total ${visible} posts`;
-      for (const button of filters) button.setAttribute('aria-pressed', String(button.dataset.filter === category));
     }
-    for (const button of filters) button.addEventListener('click', () => { category = button.dataset.filter; filter(); });
     input.addEventListener('input', filter);
-    document.querySelector('[data-reset]').addEventListener('click', () => { category = 'all'; input.value = ''; filter(); input.focus(); });
+    document.querySelector('[data-reset]').addEventListener('click', () => { input.value = ''; filter(); input.focus(); });
     input.addEventListener('keydown', event => { if (event.key === 'Escape') { input.value = ''; filter(); } });
   }
   const back = document.querySelector('.back-top');
