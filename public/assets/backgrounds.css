@@ -64,8 +64,8 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
   box-shadow: var(--panel-shadow);
 }
 .site-header { padding: 18px 26px; margin-top: 24px; min-height: 88px; border-radius: 18px; }
-.intro { min-height: 475px; padding: 48px 0 34px; align-items: center; }
-.intro-copy { max-width: 520px; padding: 32px 34px; border-radius: 22px; }
+.intro { min-height: 475px; padding: 48px 0 34px; align-items: stretch; }
+.intro-copy { min-width: 0; max-width: none; padding: 32px 34px; border-radius: 22px; }
 .intro h1 { font-size: clamp(32px, 3.5vw, 44px); letter-spacing: 1px; }
 .intro-description { font-size: 14px; }
 .intro-bottom { padding: 14px 25px; border-radius: 14px; }

@@ -51,7 +51,7 @@ main:focus { outline:none; }
 .theme-toggle .sun { display:none; }
 [data-theme="dark"] .theme-toggle .moon { display:none; }
 [data-theme="dark"] .theme-toggle .sun { display:block; }
-.intro { display:grid; grid-template-columns:1.15fr 1fr; gap:24px; align-items:center; padding:58px 0 37px; }
+.intro { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:stretch; padding:58px 0 37px; }
 .eyebrow { color:var(--green); font:10px/1.6 var(--serif); letter-spacing:2px; margin:0 0 25px; }
 .intro .eyebrow { display:flex; align-items:center; gap:10px; }
 .small-star { font-size:19px; line-height:1; }
