@@ -59,6 +59,14 @@ main:focus { outline:none; }
 .intro h1>span { color:var(--green); position:relative; }
 .intro h1>span::after { content:""; position:absolute; height:7px; bottom:1px; left:0; right:0; border-top:2px solid var(--green); border-radius:50%; opacity:.3; transform:rotate(-1deg); }
 .intro-description { color:var(--muted); font-size:13px; line-height:2.15; margin:0 0 25px; letter-spacing:.3px; }
+.latest-post-card { min-width:0; padding:30px 32px; border:1px solid var(--glass-border); border-radius:22px; background:var(--glass); box-shadow:var(--panel-shadow); }
+.latest-post-top { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:24px; }
+.latest-post-label { margin:0; color:var(--green); font-size:11px; letter-spacing:2px; }
+.latest-post-top .post-date { align-items:flex-end; padding-top:0; }
+.latest-post-card .post-labels { font-size:11px; }
+.latest-post-card h2 { margin:17px 0 16px; font:500 clamp(22px,2.2vw,28px)/1.65 var(--serif); text-wrap:balance; overflow-wrap:anywhere; }
+.latest-post-summary { margin:0 0 26px; color:var(--muted); font-size:15px; line-height:2; overflow-wrap:anywhere; }
+
 .text-link { display:inline-flex; align-items:center; justify-content:space-between; gap:30px; color:var(--green); border:0; border-bottom:1px solid var(--hint); padding:0 0 4px; background:transparent; font-size:12px; }
 .text-link:hover span { transform:translate(2px,-2px); }
 .text-link span { transition:transform .15s; }

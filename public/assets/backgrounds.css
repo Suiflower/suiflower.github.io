@@ -66,8 +66,6 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
 .site-header { padding: 18px 26px; margin-top: 24px; min-height: 88px; border-radius: 18px; }
 .intro { min-height: 475px; padding: 48px 0 34px; align-items: center; }
 .intro-copy { max-width: 520px; padding: 32px 34px; border-radius: 22px; }
-/* Leave the right half of the hero open for the wallpaper's character. */
-.intro-art { display: none; }
 .intro h1 { font-size: clamp(32px, 3.5vw, 44px); letter-spacing: 1px; }
 .intro-description { font-size: 14px; }
 .intro-bottom { padding: 14px 25px; border-radius: 14px; }
@@ -91,8 +89,9 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
 }
 @media (max-width: 760px) {
   .site-header { margin-top: 18px; padding: 15px 20px; }
-  .intro { min-height: 435px; padding-top: 32px; gap: 0; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); }
-  .intro-copy { padding: 25px; }
+  .intro { min-height: 0; padding-top: 32px; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+  .intro-copy { max-width: none; padding: 25px; }
+  .latest-post-card { padding: 26px; }
   .intro h1 { font-size: 30px; }
   .intro-description { font-size: 12px; }
   .intro-bottom { padding-inline: 20px; }
@@ -109,6 +108,7 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
   .header-right { margin-top: 6px; }
   .intro { display: block; min-height: 0; padding: 300px 0 22px; }
   .intro-copy { padding: 26px 24px; border-radius: 18px; }
+  .latest-post-card { margin-top: 20px; padding: 26px 24px; border-radius: 18px; }
   .intro h1 { font-size: 32px; letter-spacing: 1px; }
   .intro-description { max-width: none; line-height: 2; }
   .intro-bottom { padding: 13px 19px; font-size: 10px; }
@@ -129,6 +129,6 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
 @media print {
   :root, :root[data-theme='dark'] { --paper: white; --ink: black; --muted: #555; --green: #333; --line: #ccc; --soft: #eee; --wash: #f5f5f5; --glass: white; --reading-surface: white; }
   body::before, body::after { display: none; }
-  .intro-copy, .writing, .intro-bottom, .reading-layout, .page-layout, .about-layout { border: 0; border-radius: 0; background: white; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .intro-copy, .latest-post-card, .writing, .intro-bottom, .reading-layout, .page-layout, .about-layout { border: 0; border-radius: 0; background: white; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
   .reading-layout, .page-layout, .about-layout { padding: 0; margin: 0; }
 }
