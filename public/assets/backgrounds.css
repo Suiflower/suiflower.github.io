@@ -120,7 +120,7 @@ body::after { z-index: -1; background: var(--wallpaper-tint); }
   .reading-top { margin-top: 22px; padding: 11px 14px; }
   .reading-layout, .page-layout, .about-layout { padding: 24px 20px; border-radius: 18px; }
   .article-header { padding-top: 0; }
-  .article-header h1 { font-size: 28px; }
+  .article-header h1 { font-size: 26px; }
   .site-footer { padding: 17px 19px; border-radius: 13px; }
 }
 @media (max-width: 520px) and (prefers-color-scheme: dark) {
