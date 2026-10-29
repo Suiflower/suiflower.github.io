@@ -1,0 +1,6 @@
+(() => {
+  let saved;
+  try { saved = localStorage.getItem('sora-garden-v2-theme'); } catch {}
+  const theme = saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.dataset.theme = theme;
+})();
