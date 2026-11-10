@@ -1,6 +1,6 @@
 # Sora's Garden
 
-[打开博客](https://suiflower.github.io/) · [查看发布进度](https://github.com/Suiflower/suiflower.github.io/actions)
+[打开博客](https://sorafan.top/) · [查看发布进度](https://github.com/Suiflower/suiflower.github.io/actions)
 
 数学思考、读书笔记和日常随笔。源码存放在这个仓库，网页由 GitHub Pages 托管；每次向 `main` 提交修改后，GitHub Actions 会自动生成并发布。
 
@@ -40,22 +40,16 @@ $$
 
 - `content/about.md`：关于页。
 - `site.json`：站名、昵称、简介和正式网址。
-- `public/assets/style.css`：配色和排版。
-- `public/assets/notebook.svg`：首页的原创数学插图。
+- `public/v2/assets/style.css`：主站配色和排版。
+- `public/v2/` 下的三个 HTML 文件管理页面外壳，`scripts/build.mjs` 中的 `savePage` 管理正文生成。
 
 目前三篇文章都是明确标注的排版示例。正式写作时可以删除示例 `.md` 文件，并将 `site.json` 中的 `showDemoNotice` 改为 `false`，移除首页示例提示和禁止搜索引擎索引的标记。单篇真实文章的 `demo` 设为 `false`。
 
-## 背景图片
+## 页面风格
 
-浅色模式使用 `public/assets/backgrounds/light.jpg`，深色模式使用 `public/assets/backgrounds/dark.jpg`。替换同名图片并重新生成即可换背景。
+主站采用第二版设计，使用米白与墨黑纯色背景。文章列表和正文直接展示，布局与配色在 `public/v2/assets/style.css` 中编辑。`public/v2/README.md` 包含详细编辑入口。
 
-背景显示和半透明阅读区域由 `public/assets/backgrounds.css` 控制，加载在基础样式之后：
-
-- `--wallpaper-position` 调整裁切位置；手机有单独的取景设置。
-- `--glass` 控制首页和导航区域的底色及透明度。
-- `--reading-surface` 控制文章页的阅读底色，透明度更低以保证公式和长文清晰。
-
-页面右上角的深浅模式按钮会同时切换背景。首页右侧留给背景画面；文章页保持完整的阅读区域。
+原 `/v2/` 页面会跳转到主站对应页面，旧文章地址继续使用原来的 `/posts/文章标识/`。
 
 ## 发布设置
 
@@ -82,7 +76,8 @@ npm run dev
 | `content/posts/` | Markdown 文章 |
 | `content/about.md` | 关于页 |
 | `site.json` | 博客基本设置 |
-| `public/assets/` | 原创图形、配色和交互 |
+| `public/assets/` | 头像、思源宋体与既有素材 |
+| `public/v2/` | 当前主站的页面外壳、主题样式和交互 |
 | `scripts/build.mjs` | 生成文章、目录、RSS 和站点地图 |
 | `.github/workflows/pages.yml` | 自动发布配置 |
 | `dist/` | 本地生成的静态网站，不提交到仓库 |
@@ -91,7 +86,7 @@ npm run dev
 
 ## 字体
 
-正文、标题、导航、日期及英文标签统一使用思源宋体。字体随网站自行托管，访客无需安装。
+中文搭配思源宋体，英文标题使用 Poppins，英文正文使用 Lora。字体随网站自行托管，访客无需安装。
 
 - 字体：Adobe Source Han Serif CN 可变 WOFF2（200–900 字重）。
 - 官方来源：https://github.com/adobe-fonts/source-han-serif/blob/7889f11bf31170b5d092a083b357c8c8130f89e0/Variable/WOFF2/OTF/Subset/SourceHanSerifCN-VF.otf.woff2

@@ -1,6 +1,6 @@
 # Sora's Garden · v2
 
-独立的第二版个人手记，使用米白与墨黑纯色背景、绿色点缀。
+已作为主站使用的第二版个人手记，使用米白与墨黑纯色背景、绿色点缀。
 
 - 首页、文章列表、关于页面和文章正文直接展示，正文区域采用透明背景。
 - 桌面端文章目录放在右侧，窄屏端优先展示正文。
@@ -10,14 +10,14 @@
 
 ## 编辑与预览
 
-- `content/posts/*.md` 为两版共用的文章源文件，新增文章后构建会同时生成第二版列表和正文。
+- `content/posts/*.md` 为文章源文件，构建生成主站列表和正文。原 `/v2/` 页面会跳转到主站对应页面，旧 `/archive/` 入口跳转到 `/posts/`。
 - `content/about.md` 为关于页面的内容。
 - `site.json` 管理站名、作者和简介。
-- `public/v2/index.html`、`posts/index.html`、`about/index.html` 是对应页面的外壳。正文由 `scripts/build.mjs` 中的 `saveV2` 相关代码生成。
+- `public/v2/index.html`、`posts/index.html`、`about/index.html` 是对应页面的外壳。正文由 `scripts/build.mjs` 中的 `savePage` 相关代码生成。
 - `public/v2/assets/style.css` 管理字体、颜色、阅读宽度与响应式布局。
 - `assets/fonts/` 包含 Poppins、Lora 及其开放字体许可证。
 
-在仓库根目录运行 `npm.cmd run build` 和 `npm.cmd run dev`，打开 http://127.0.0.1:4173/v2/。
+在仓库根目录运行 `npm.cmd run build` 和 `npm.cmd run dev`，打开 http://127.0.0.1:4173/。
 
 ## 邮箱账号
 
