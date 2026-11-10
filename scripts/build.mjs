@@ -89,6 +89,10 @@ fs.mkdirSync(dist, { recursive: true });
 if (path.dirname(dist) !== project.replace(/[\\/]$/, '')) throw new Error('Unexpected output directory.');
 for (const name of fs.readdirSync(dist)) fs.rmSync(path.join(dist, name), { recursive: true, force: true });
 fs.cpSync(path.join(project, 'public'), dist, { recursive: true });
+// Page templates are read from public/v2, but only the main site publishes them.
+for (const template of ['index.html', 'posts/index.html', 'about/index.html']) {
+  fs.unlinkSync(path.join(dist, 'v2', template));
+}
 await prepareFonts(dist);
 validateAuthConfig(authConfig);
 await bundle({
@@ -245,7 +249,7 @@ for (const [index, post] of posts.entries()) {
 }
 
 
-// Preserve bookmarks to the preview and the original archive entrance.
+// Preserve the original archive entrance.
 function saveRedirect(route, target) {
   save(route, `<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -254,9 +258,7 @@ function saveRedirect(route, target) {
 <script>location.replace(${JSON.stringify(target)} + location.search + location.hash);</script></head>
 <body><p><a href="${escape(target)}">前往 ${escape(config.title)}</a></p></body></html>`);
 }
-for (const route of ['', 'posts', 'about', ...posts.map(post => `posts/${post.slug}`)]) {
-  saveRedirect(`v2/${route}`, `/${route}${route ? '/' : ''}`);
-}
+
 saveRedirect('archive', '/posts/');
 savePage('', {
   title: '这一页还没写到', notFound: true, active: 'home',

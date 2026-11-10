@@ -10,7 +10,8 @@
 
 ## 编辑与预览
 
-- `content/posts/*.md` 为文章源文件，构建生成主站列表和正文。原 `/v2/` 页面会跳转到主站对应页面，旧 `/archive/` 入口跳转到 `/posts/`。
+- `content/posts/*.md` 为文章源文件，构建生成主站列表和正文。旧 `/archive/` 入口跳转到 `/posts/`。
+- `public/v2/` 用于保存主站模板和资源。构建时仅发布主站页面，旧 `/v2/` 页面入口已停用。
 - `content/about.md` 为关于页面的内容。
 - `site.json` 管理站名、作者和简介。
 - `public/v2/index.html`、`posts/index.html`、`about/index.html` 是对应页面的外壳。正文由 `scripts/build.mjs` 中的 `savePage` 相关代码生成。
