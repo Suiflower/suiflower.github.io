@@ -10,10 +10,12 @@
   <link rel="icon" type="image/svg+xml" href="../assets/avatar.svg">
   <link rel="preload" href="../assets/fonts/SourceHanSerifCN-VF.otf.woff2" as="font" type="font/woff2" crossorigin>
   <script src="./assets/theme.js"></script>
-  <link rel="stylesheet" href="./assets/style.css?v=b385ef6c46">
+  <link rel="stylesheet" href="./assets/style.css?v=b87fb93e0d">
   <script src="./assets/site.js" defer></script>
+  <script type="module" src="./assets/auth.js?v=1"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">跳到正文</a>
   <header class="site-header">
     <a class="brand" href="./index.html" aria-label="Sora's Garden，首页">
       <img src="../assets/avatar.svg" alt="" width="44" height="44">
@@ -25,8 +27,43 @@
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13.1A8.4 8.4 0 0 1 10.9 3.5a8.5 8.5 0 1 0 9.6 9.6Z"/></svg>
       </button>
+
+      <button class="account-toggle" type="button" aria-label="登录或注册" aria-haspopup="dialog" aria-controls="account-dialog" title="登录或注册">
+        <img class="account-avatar" alt="" hidden width="40" height="40">
+        <span class="account-initials" hidden></span>
+        <svg class="account-placeholder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
+      </button>
     </div>
   </header>
-  <main class="page-content" aria-label="页面内容"></main>
+  <main class="page-content" id="main" tabindex="-1" aria-label="页面内容"><!-- Content is generated from content/ by scripts/build.mjs. --></main>
+
+  <dialog class="auth-dialog" id="account-dialog" aria-labelledby="auth-title" aria-describedby="auth-description">
+    <button class="auth-close" type="button" aria-label="关闭账号窗口"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    <div class="auth-heading"><span class="auth-kicker">Sora's Garden</span><h1 id="auth-title">登录 / 注册</h1><p id="auth-description">用邮箱接收验证码，新邮箱验证后自动注册。</p></div>
+    <p class="auth-notice" data-auth-notice hidden></p>
+    <section data-auth-guest>
+      <form class="auth-form" data-email-form>
+        <label for="auth-email">邮箱地址</label>
+        <input id="auth-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" maxlength="254" required>
+        <button class="auth-primary" type="submit" data-send-code>发送验证码</button>
+      </form>
+      <form class="auth-form" data-code-form hidden>
+        <p class="auth-sent">验证码已发送至 <strong data-sent-email></strong></p>
+        <label for="auth-code">邮箱验证码</label>
+        <input id="auth-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,10}" minlength="6" maxlength="10" placeholder="输入验证码" required>
+        <button class="auth-primary" type="submit" data-verify-code>验证并登录</button>
+        <div class="auth-actions"><button class="auth-text-button" type="button" data-change-email>更换邮箱</button><button class="auth-text-button" type="button" data-resend-code>重新发送</button></div>
+      </form>
+    </section>
+    <section class="auth-profile" data-auth-profile hidden>
+      <div class="profile-avatar-wrap"><img class="profile-avatar" alt="你的头像" hidden width="80" height="80"><span class="profile-initials" aria-hidden="true"></span></div>
+      <p class="profile-email" data-profile-email></p>
+      <button class="auth-text-button" type="button" data-upload-avatar>更换头像</button>
+      <input type="file" data-avatar-file accept="image/jpeg,image/png,image/webp" hidden aria-label="选择新头像">
+      <button class="auth-secondary" type="button" data-sign-out>退出登录</button>
+    </section>
+    <p class="auth-message" data-auth-status role="status" aria-live="polite" hidden></p>
+    <p class="auth-error" data-auth-error role="alert" hidden></p>
+  </dialog>
 </body>
 </html>

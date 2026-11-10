@@ -5,6 +5,9 @@ import { fileURLToPath } from 'node:url';
 import MarkdownIt from 'markdown-it';
 import katex from 'katex';
 import { prepareFonts } from './prepare-fonts.mjs';
+import { build as bundle } from 'esbuild';
+import { authConfig } from '../public/v2/assets/auth-config.js';
+import { validateAuthConfig } from './auth-settings.mjs';
 
 const project = fileURLToPath(new URL('../', import.meta.url));
 const styleVersion = createHash('sha256').update(fs.readFileSync(path.join(project, 'public/assets/style.css'))).digest('hex').slice(0, 12);
@@ -89,6 +92,16 @@ if (path.dirname(dist) !== project.replace(/[\\/]$/, '')) throw new Error('Unexp
 for (const name of fs.readdirSync(dist)) fs.rmSync(path.join(dist, name), { recursive: true, force: true });
 fs.cpSync(path.join(project, 'public'), dist, { recursive: true });
 await prepareFonts(dist);
+validateAuthConfig(authConfig);
+await bundle({
+  entryPoints: [path.join(project, 'scripts/browser/auth.mjs')],
+  outfile: path.join(dist, 'v2/assets/auth.js'),
+  bundle: true, format: 'esm', platform: 'browser', target: 'es2022',
+  minify: true, legalComments: 'linked',
+});
+const accountVersion = createHash('sha256').update(fs.readFileSync(path.join(dist, 'v2/assets/auth.js'))).digest('hex').slice(0, 12);
+
+
 fs.mkdirSync(path.join(dist, 'assets/katex'), { recursive: true });
 fs.copyFileSync(path.join(project, 'node_modules/katex/dist/katex.min.css'), path.join(dist, 'assets/katex/katex.min.css'));
 fs.cpSync(path.join(project, 'node_modules/katex/dist/fonts'), path.join(dist, 'assets/katex/fonts'), { recursive: true });
@@ -133,6 +146,125 @@ for (const post of posts) {
   const body = `<div class="reading-top"><a class="back-link" href="../../">← 回到手记</a></div><div class="reading-frame${post.toc.length ? '' : ' reading-frame--plain'}"><article class="reading-layout"><header class="article-header"><div class="post-labels"><span class="category">${escape(post.category)}</span>${post.demo ? '<span class="demo-label">排版示例</span>' : ''}</div><h1>${escape(post.title)}</h1><p class="article-description">${escape(post.description)}</p><div class="article-meta"><span>${escape(config.author)}</span><span aria-hidden="true">·</span><time datetime="${post.date}">${dateLabel(post.date)}</time></div></header><div class="article-body"><div class="prose">${post.html}</div></div><footer class="article-footer"><div class="tags">${post.tags.map(t => `<span># ${escape(t)}</span>`).join('')}</div><p>写到这里，留一点余地给下一次思考。 <span aria-hidden="true">✳</span></p></footer><nav class="post-neighbors" aria-label="继续阅读">${neighbors.map(p => `<a href="../${p.slug}/"><span>继续翻一页 ${arrow}</span><strong>${escape(p.title)}</strong></a>`).join('')}</nav></article>${post.toc.length ? `<aside class="table-of-contents" aria-label="文章目录卡片"><p class="mono">ON THIS PAGE</p><nav aria-label="文章目录">${post.toc.map(t => `<a href="#${escape(t.id)}">${escape(t.title)}</a>`).join('')}</nav></aside>` : ''}</div>`;
   save(`posts/${post.slug}`, shell({ title: post.title, description: post.description, route: `posts/${post.slug}/`, body, article: true }));
 }
+
+// Both designs share the Markdown sources. Each keeps its own presentation.
+const v2StyleVersion = createHash('sha256')
+  .update(fs.readFileSync(path.join(project, 'public/v2/assets/style.css')))
+  .digest('hex').slice(0, 12);
+
+function saveV2(route, { title, description = config.description, body, active = 'posts', article = false }) {
+  const depth = route.split('/').filter(Boolean).length;
+  const root = depth ? '../'.repeat(depth) : './';
+  const templateRoute = article || !route ? 'index.html' : `${route}/index.html`;
+  const sourceRoot = templateRoute === 'index.html' ? './' : '../';
+  const template = fs.readFileSync(path.join(project, 'public/v2', templateRoute), 'utf8');
+  let html = template.replace(/(href|src)="(\.\.?\/[^"#]*)"/g, (_, attribute, value) => {
+    const relative = value.startsWith(sourceRoot) ? value.slice(sourceRoot.length) : value;
+    return `${attribute}="${root}${relative}"`;
+  });
+  html = html.replace(/<title>[^<]*<\/title>/, () => `<title>${escape(title)} · ${escape(config.title)}</title>`);
+  html = html.replace(/<meta name="description" content="[^"]*">/, () =>
+    `<meta name="description" content="${escape(description)}">`);
+  html = html.replace(/ aria-current="page"/g, '');
+  const activeHref = root + { home: 'index.html', posts: 'posts/index.html', about: 'about/index.html' }[active];
+  html = html.replace(`class="nav-link" href="${activeHref}"`, () =>
+    `class="nav-link" href="${activeHref}" aria-current="page"`);
+  html = html.replace(/assets\/style\.css\?v=[^"\s]+/g, `assets/style.css?v=${v2StyleVersion}`);
+  html = html.replace(/assets\/auth\.js\?v=[^"\s]+/g, `assets/auth.js?v=${accountVersion}`);
+  if (article) {
+    html = html.replace('</head>', `<link rel="stylesheet" href="${root}../assets/katex/katex.min.css"></head>`);
+  }
+  const mainClass = article ? 'page-content reading-content' : 'page-content';
+  html = html.replace(/<main class="page-content"[\s\S]*?<\/main>/, () => `
+  <main class="${mainClass}" id="main" tabindex="-1">${body}</main>
+  <footer class="site-footer">
+    <span>© ${new Date().getUTCFullYear()} ${escape(config.author)}</span>
+    <a href="${root}../feed.xml">RSS 订阅</a>
+  </footer>`);
+  save(`v2/${route}`, html);
+}
+
+function v2Entry(post, root) {
+  return `<article class="entry">
+    <time class="entry-date" datetime="${post.date}" aria-label="${dateLabel(post.date)}">
+      <span>${post.date.slice(5).replace('-', '.')}</span><small>${post.date.slice(0, 4)}</small>
+    </time>
+    <div>
+      <p class="entry-category">${escape(post.category)}${post.demo ? '（排版示例）' : ''}</p>
+      <h3><a href="${root}${post.slug}/">${escape(post.title)}</a></h3>
+      <p class="entry-summary">${escape(post.description)}</p>
+    </div>
+  </article>`;
+}
+
+const v2DemoNotice = config.showDemoNotice && posts.some(post => post.demo)
+  ? '<p class="demo-note">下方标注的文章为排版示例，等待换上你的第一篇手记。</p>' : '';
+saveV2('', {
+  title: 'Home', active: 'home',
+  body: `<section class="welcome">
+    <h1>你好，我是 ${escape(config.author)}。</h1>
+    <p>${escape(config.description)}</p>
+    <a href="./about/">关于这份手记</a>
+  </section>
+  <section aria-labelledby="recent-title">
+    <div class="section-heading"><h2 id="recent-title">最近的手记</h2><a href="./posts/">全部文章</a></div>
+    ${v2DemoNotice}
+    ${posts.length
+      ? posts.slice(0, 5).map(post => v2Entry(post, './posts/')).join('')
+      : '<p class="demo-note">第一篇手记还在准备中。</p>'}
+  </section>`
+});
+
+const v2Years = [...new Set(posts.map(post => post.date.slice(0, 4)))];
+saveV2('posts', {
+  title: 'Posts',
+  body: `<header class="page-heading"><h1>手记</h1><p>数学思考、读书笔记和日常随笔。</p></header>
+  ${v2DemoNotice}
+  ${v2Years.map(year => `<section aria-labelledby="year-${year}">
+    <h2 class="archive-year" id="year-${year}">${year}</h2>
+    ${posts.filter(post => post.date.startsWith(year)).map(post => v2Entry(post, './')).join('')}
+  </section>`).join('')}
+  ${posts.length ? '' : '<p class="demo-note">第一篇手记还在准备中。</p>'}`
+});
+
+saveV2('about', {
+  title: 'About', active: 'about',
+  body: `<section class="prose about-content">${about.replace(
+    '<h1 id="你好-我是-kisaki">你好，我是 Kisaki。</h1>',
+    () => `<h1>你好，我是 ${escape(config.author)}。</h1>`
+  )}</section>`
+});
+
+for (const [index, post] of posts.entries()) {
+  const neighbors = [[posts[index - 1], '上一篇'], [posts[index + 1], '下一篇']]
+    .filter(([item]) => item);
+  const toc = post.toc.length ? `<aside class="article-toc" aria-label="文章目录">
+    <p>本文目录</p>
+    <nav>${post.toc.map(item => `<a href="#${escape(item.id)}">${escape(item.title)}</a>`).join('')}</nav>
+  </aside>` : '';
+  saveV2(`posts/${post.slug}`, {
+    title: post.title, description: post.description, article: true,
+    body: `<a class="reading-back" href="../">返回手记</a>
+    <div class="reading-layout${toc ? '' : ' reading-layout--plain'}">
+      <article class="article">
+        <header class="article-header">
+          <p class="entry-category">${escape(post.category)}${post.demo ? '（排版示例）' : ''}</p>
+          <h1>${escape(post.title)}</h1>
+          <p class="article-description">${escape(post.description)}</p>
+          <div class="article-meta"><span>${escape(config.author)}</span><time datetime="${post.date}">${dateLabel(post.date)}</time></div>
+        </header>
+        <div class="prose">${post.html}</div>
+        <footer class="article-end">${post.tags.map(tag => `<span># ${escape(tag)}</span>`).join('')}</footer>
+        <nav class="post-neighbors" aria-label="继续阅读">
+          ${neighbors.map(([item, label]) => `<a href="../${item.slug}/"><span>${label}</span>${escape(item.title)}</a>`).join('')}
+        </nav>
+      </article>
+      ${toc}
+    </div>`
+  });
+}
+
+
 fs.writeFileSync(path.join(dist, '404.html'), shell({ title: '这一页还没写到', rootOverride: new URL(origin + '/').pathname, body: `<section class="page-layout not-found"><p class="eyebrow">PAGE 404</p><h1>这一页，还没写到。</h1><p>也许地址有一点偏差。回到首页，翻开另一篇手记吧。</p><a class="text-link" href="${escape(new URL(origin + '/').pathname)}">回到手记首页 ↗</a></section>` }));
 const updated = posts[0] ? `${posts[0].date}T00:00:00+08:00` : '2026-10-26T00:00:00+08:00';
 fs.writeFileSync(path.join(dist, 'feed.xml'), `<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>${escape(config.title)}</title><subtitle>${escape(config.description)}</subtitle><link href="${escape(origin)}/feed.xml" rel="self"/><link href="${escape(origin)}/"/><id>${escape(origin)}/</id><updated>${updated}</updated><author><name>${escape(config.author)}</name></author>${posts.map(p => `<entry><title>${escape(p.title)}${p.demo ? ' [排版示例]' : ''}</title><link href="${escape(origin)}/posts/${p.slug}/"/><id>${escape(origin)}/posts/${p.slug}/</id><updated>${p.date}T00:00:00+08:00</updated><summary>${escape(p.description)}</summary><content type="html">${escape(p.html)}</content></entry>`).join('')}</feed>`);

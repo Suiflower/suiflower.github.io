@@ -8,7 +8,11 @@
     "dev": "node scripts/serve.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
     "katex": "^0.16.22",
     "markdown-it": "^14.1.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
   }
 }
